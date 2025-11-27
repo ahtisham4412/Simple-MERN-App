@@ -3,6 +3,9 @@ import PersonForm from './components/PersonForm';
 import PersonList from './components/PersonList';
 import './App.css';
 
+// Use relative path for production, absolute for development
+const API_BASE = import.meta.env.PROD ? '/api/v1' : 'http://localhost:5000/api/v1';
+
 function App() {
   const [people, setPeople] = useState([]);
   const [editingPerson, setEditingPerson] = useState(null);
@@ -12,7 +15,7 @@ function App() {
   const fetchPeople = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/v1/people');
+      const response = await fetch(`${API_BASE}/people`);
       const result = await response.json();
       
       if (result.success) {
@@ -36,7 +39,7 @@ function App() {
   // Add or update person
   const handleAddPerson = async (personData) => {
     try {
-      const url = 'http://localhost:5000/api/v1/people';
+      const url = `${API_BASE}/people`;
       const method = 'POST';
       
       const response = await fetch(url, {
@@ -52,6 +55,7 @@ function App() {
       if (result.success) {
         await fetchPeople(); // Refresh the list
         setEditingPerson(null);
+        alert('Person added successfully!');
       } else {
         alert('Failed to save person: ' + result.message);
       }
@@ -67,6 +71,7 @@ function App() {
       try {
         // Since our simple backend doesn't have delete yet, we'll filter locally
         setPeople(prevPeople => prevPeople.filter(person => person.id !== personId));
+        alert('Person deleted successfully!');
       } catch (error) {
         console.error('Error deleting person:', error);
         alert('Error deleting person. Please try again.');
@@ -90,7 +95,7 @@ function App() {
 
   return (
     <div className="App">
-      <header style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
+      <header style={{ padding: '20px', backgroundColor: '#f5f5f5', textAlign: 'center' }}>
         <h1>Simple MERN Application</h1>
         <p>Manage your people database</p>
       </header>
