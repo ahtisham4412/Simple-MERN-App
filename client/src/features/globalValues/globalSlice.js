@@ -6,7 +6,7 @@ export const fetchPerson = createAsyncThunk(
   "people/fetchPerson",
   async (data) => {
     const response = await axios(
-      `http://localhost:5000/api/v1/people/${data.person._id}`
+      `${import.meta.env.VITE_API_URL}/people/${data.person._id}`
     );
 
     return response.data;

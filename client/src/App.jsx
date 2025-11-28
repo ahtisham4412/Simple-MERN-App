@@ -4,7 +4,7 @@ import PersonList from './components/PersonList';
 import './App.css';
 
 // Use relative path for production, absolute for development
-const API_BASE = import.meta.env.PROD ? '/api/v1' : 'http://localhost:5000/api/v1';
+const API_BASE = import.meta.env.VITE_API_URL + "/api/v1";
 
 function App() {
   const [people, setPeople] = useState([]);
